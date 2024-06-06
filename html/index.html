@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .dropdown {
+            margin-bottom: 20px;
+        }
+        .api-details {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+        }
+        .api-details h2 {
+            margin-top: 0;
+        }
+        .api-form {
+            margin-bottom: 20px;
+        }
+        .api-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .api-form input, .api-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .api-form button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .api-form button:disabled {
+            background-color: #ccc;
+        }
+        .response {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>API Documentation</h1>
+    </header>
+    <div class="container">
+        <div class="dropdown">
+            <label for="api-select">API機能を選択してください:</label>
+            <select id="api-select">
+                <option value="">選択してください</option>
+                <option value="isCreateUser">ユーザー名が登録できるか</option>
+                <option value="createUser">ユーザーを作成する</option>
+                <option value="login">ユーザーの認証</option>
+                <option value="createNovel">小説の投稿</option>
+                <option value="changeNovelTitle">小説のタイトルの変更</option>
+                <option value="changeNovelGenre">小説のジャンルの変更</option>
+                <option value="changeNovelSummary">小説のあらすじの変更</option>
+                <option value="getNovelID">小説IDを所得する</option>
+                <option value="addText">小説の話の追加</option>
+                <option value="getGenres">ジャンル一覧</option>
+                <option value="getGenreNovels">そのジャンルの本一覧</option>
+                <option value="getNovelsInTitle">タイトルに含む小説のIDとtitleを所得</option>
+                <option value="getNovelsInSummary">サマリーに含む小説のIDとtitleを所得</option>
+            </select>
+        </div>
+        <div id="api-details" class="api-details" style="display: none;">
+            <h2 id="api-title">API タイトル</h2>
+            <p><strong>エンドポイント:</strong> <span id="api-endpoint"></span></p>
+            <p><strong>リクエストメソッド:</strong> <span id="api-method"></span></p>
+            <p><strong>パラメータ:</strong> <span id="api-parameters"></span></p>
+            <p><strong>レスポンス形式:</strong> <span id="api-response"></span></p>
+        </div>
+        <div id="api-form" class="api-form" style="display: none;">
+            <form id="request-form">
+                <!-- フォームフィールドは動的に追加されます -->
+                <div id="form-fields"></div>
+                <button type="submit">送信</button>
+            </form>
+        </div>
+        <div id="response" class="response" style="display: none;">
+            <h3>レスポンス</h3>
+            <pre id="response-output"></pre>
+        </div>
+    </div>
+
+    <script>
+        const baseUrl = "http://novelapi.xyz:8080";
+        const apiData = {
+            isCreateUser: {
+                title: "ユーザー名が登録できるか",
+                endpoint: "/isCreateUser/{name}",
+                method: "GET",
+                parameters: ["name"],
+                response: `{
+                    "message": "Ok" (登録できる場合),
+                    "message": "User name is invalid" (記号が含まれている場合),
+                    "message": "User found" (すでに使用されている場合)
+                }`
+            },
+            createUser: {
+                title: "ユーザーを作成する",
+                endpoint: "/CreateUser/{name}/{password}/{email}",
+                method: "GET",
+                parameters: ["name", "password", "email"],
+                response: `{
+                    "message": "User created" (成功),
+                    "message": "Email is invalid" (Emailが正しくない場合),
+                    "message": "User already" (登録に失敗)
+                }`
+            },
+            login: {
+                title: "ユーザーの認証",
+                endpoint: "/Login/{name}/{password}",
+                method: "GET",
+                parameters: ["name", "password"],
+                response: `{
+                    "message": "Login success" (成功),
+                    "message": "Login failed" (失敗)
+                }`
+            },
+            createNovel: {
+                title: "小説の投稿",
+                endpoint: "/CreateNovel/{name}/{password}/{title}/{genre}/{summary}",
+                method: "GET",
+                parameters: ["name", "password", "title", "genre", "summary"],
+                response: `{
+                    "message": "Novel created" (成功),
+                    "message": "Novel not created" (失敗)
+                }`
+            },
+            changeNovelTitle: {
+                title: "小説のタイトルの変更",
+                endpoint: "/ChangeNovelTitle/{name}/{password}/{id}/{title}",
+                method: "GET",
+                parameters: ["name", "password", "id", "title"],
+                response: `{
+                    "message": "Title changed" (成功),
+                    "message": "Title not changed" (失敗)
+                }`
+            },
+            changeNovelGenre: {
+                title: "小説のジャンルの変更",
+                endpoint: "/ChangeNovelGenre/{name}/{password}/{id}/{genre}",
+                method: "GET",
+                parameters: ["name", "password", "id", "genre"],
+                response: `{
+                    "message": "Genre changed" (成功),
+                    "message": "Genre not changed" (失敗)
+                }`
+            },
+            changeNovelSummary: {
+                title: "小説のあらすじの変更",
+                endpoint: "/ChangeNovelSummary/{name}/{password}/{id}/{summary}",
+                method: "GET",
+                parameters: ["name", "password", "id", "summary"],
+                response: `{
+                    "message": "Summary changed" (成功),
+                    "message": "Summary not changed" (失敗)
+                }`
+            },
+            getNovelID: {
+                title: "小説IDを所得する",
+                endpoint: "/GetNovelID/{name}/{password}/{novel_title}",
+                method: "GET",
+                parameters: ["name", "password", "novel_title"],
+                response: `{
+                    "message": "Novel not found" (見つからない場合),
+                    "novel_id": novel_id (見つかった場合)
+                }`
+            },
+            addText: {
+                title: "小説の話の追加",
+                endpoint: "/AddText",
+                method: "POST",
+                parameters: ["name", "password", "novel_id", "title", "text"],
+                response: `{
+                    "message": "Text added" (成功),
+                    "message": "Text not added" (失敗)
+                }`
+            },
+            getGenres: {
+                title: "ジャンル一覧",
+                endpoint: "/getGenres",
+                method: "GET",
+                parameters: [],
+                response: `[
+                    [2,"ジャンル２",2],
+                    [3,"ジャンル３",2],
+                    [1,"ジャンル１",1],
+                    [4,"ジャンル４",1]
+                ]`
+            },
+            getGenreNovels: {
+                title: "そのジャンルの本一覧",
+                endpoint: "/getGenreNovels/{genre}",
+                method: "GET",
+                parameters: ["genre"],
+                response: `[
+                    {"novel_id":1,"title":"テスト投稿"}
+                ]`
+            },
+            getNovelsInTitle: {
+                title: "タイトルに含む小説のIDとtitleを所得",
+                endpoint: "/getNovelisTitleinTitle/{title}",
+                method: "GET",
+                parameters: ["title"],
+                response: `[
+                    {"novel_id":2,"title":"asdf"},
+                    {"novel_id":6,"title":"asdfasdf"}
+                ]`
+            },
+            getNovelsInSummary: {
+                title: "サマリーに含む小説のIDとtitleを所得",
+                endpoint: "/getNovelisSummaryinSummary/{summary}",
+                method: "GET",
+                parameters: ["summary"],
+                response: `[
+                    {"novel_id":2,"title":"asdf"},
+                    {"novel_id":6,"title":"asdfasdf"}
+                ]`
+            }
+        };
+
+        function replaceUrlPlaceholders(url, params) {
+            for (const key in params) {
+                url = url.replace(`{${key}}`, encodeURIComponent(params[key]));
+            }
+            return url;
+        }
+
+        document.getElementById('api-select').addEventListener('change', function() {
+            const selectedFeature = this.value;
+            const detailsDiv = document.getElementById('api-details');
+            const formDiv = document.getElementById('api-form');
+            const formFieldsDiv = document.getElementById('form-fields');
+            const responseDiv = document.getElementById('response');
+            
+            if (selectedFeature) {
+                const feature = apiData[selectedFeature];
+                document.getElementById('api-title').textContent = feature.title;
+                document.getElementById('api-endpoint').textContent = feature.endpoint;
+                document.getElementById('api-method').textContent = feature.method;
+                document.getElementById('api-parameters').textContent = feature.parameters.join(', ');
+                document.getElementById('api-response').textContent = feature.response;
+                
+                // フォームフィールドをクリア
+                formFieldsDiv.innerHTML = '';
+                feature.parameters.forEach(param => {
+                    const label = document.createElement('label');
+                    label.setAttribute('for', param);
+                    label.textContent = param;
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'text');
+                    input.setAttribute('id', param);
+                    input.setAttribute('name', param);
+                    formFieldsDiv.appendChild(label);
+                    formFieldsDiv.appendChild(input);
+                });
+
+                detailsDiv.style.display = 'block';
+                formDiv.style.display = 'block';
+                responseDiv.style.display = 'none';  // 隠す
+            } else {
+                detailsDiv.style.display = 'none';
+                formDiv.style.display = 'none';
+                responseDiv.style.display = 'none';  // 隠す
+            }
+        });
+
+        document.getElementById('request-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const selectedFeature = document.getElementById('api-select').value;
+            const feature = apiData[selectedFeature];
+            const formData = new FormData(event.target);
+            const params = {};
+            formData.forEach((value, key) => {
+                params[key] = value;
+            });
+
+            let url = baseUrl + feature.endpoint;
+            url = replaceUrlPlaceholders(url, params);
+
+            let fetchOptions = { method: feature.method };
+
+            if (feature.method === 'GET') {
+                const urlParams = new URLSearchParams(params).toString();
+                fetchOptions.headers = { 'Content-Type': 'application/json' };
+                fetch(url + '?' + urlParams, fetchOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('response-output').textContent = JSON.stringify(data, null, 2);
+                        document.getElementById('response').style.display = 'block';
+                    })
+                    .catch(error => {
+                        document.getElementById('response-output').textContent = 'Error: ' + error;
+                        document.getElementById('response').style.display = 'block';
+                    });
+            } else {
+                fetchOptions.headers = { 'Content-Type': 'application/json' };
+                fetchOptions.body = JSON.stringify(params);
+                fetch(url, fetchOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('response-output').textContent = JSON.stringify(data, null, 2);
+                        document.getElementById('response').style.display = 'block';
+                    })
+                    .catch(error => {
+                        document.getElementById('response-output').textContent = 'Error: ' + error;
+                        document.getElementById('response').style.display = 'block';
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
