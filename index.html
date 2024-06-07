@@ -83,6 +83,12 @@
                 <option value="getGenreNovels">そのジャンルの本一覧</option>
                 <option value="getNovelsInTitle">タイトルに含む小説のIDとtitleを所得</option>
                 <option value="getNovelsInSummary">サマリーに含む小説のIDとtitleを所得</option>
+                <option value="getChapterCount">小説のChapter数を所得</option>
+                <option value="getNovelData">小説の情報を所得</option>
+                <option value="getNovelText">小説のチャプターの情報の所得</option>
+                <option value="getNovelText">小説のチャプターの情報一覧の所得</option>
+                <option value="getChapterText">小説のチャプターの本文を所得する</option>
+            
             </select>
         </div>
         <div id="api-details" class="api-details" style="display: none;">
@@ -240,6 +246,65 @@
                     {"novel_id":2,"title":"asdf"},
                     {"novel_id":6,"title":"asdfasdf"}
                 ]`
+            },
+            getChapterCount: {
+                title: "小説のChapter数を所得",
+                endpoint: "/GetChapterCount/{novel_id}",
+                method: "GET",
+                parameters: ["novel_id"],
+                response: `{
+                    "chapter_count": 5 (所得できた場合),
+                    "chapter_count": 0 (本が存在しない場合)
+                }`
+            },
+            getNovelData: {
+                title: "小説の情報を所得",
+                endpoint: "/GetNovelData/{novel_id}",
+                method: "GET",
+                parameters: ["novel_id"],
+                response: `{
+                    "title": "小説投稿テスト１",
+                    "author": "1",
+                    "genre": "Test",
+                    "summary": "NovelAPIのテスト用小説",
+                    "chapter": 5 (所得できた場合),
+                    "message": "Novel not found" (本が存在しない場合)
+                }`
+            },
+            getNovelText: {
+                title: "小説のチャプターの情報の所得",
+                endpoint: "/GetNovelText/{novel_id}/{chapter}",
+                method: "GET",
+                parameters: ["novel_id","chapte"],
+                response: `{
+                    "TextDatas": "chapter": 1, "title": "テスト投稿１"
+                }`
+            },
+            getNovelTextAll: {
+                title: "小説のチャプターの情報の一覧の所得",
+                endpoint: "/GetNovelText/{novel_id}/all",
+                method: "GET",
+                parameters: ["novel_id"],
+                response: `{
+                    "NovelTitle": "小説投稿テスト１",
+                    "TextDatas": [
+                        {"chapter": 1, "title": "テスト投稿１"},
+                        {"chapter": 2, "title": "テスト投稿２"},
+                        {"chapter": 3, "title": "テスト投稿２"},
+                        {"chapter": 4, "title": "テスト投稿３"},
+                        {"chapter": 5, "title": "テスト投稿４"}
+                    ]
+                }`
+            },
+            getChapterText: {
+                title: "小説のチャプターの本文を所得する",
+                endpoint: "/GetNovelText/{novel_id}/{chapter}",
+                method: "GET",
+                parameters: ["novel_id", "chapter"],
+                response: `{
+                    "text": "テストテキスト・テストテキスト・テストテキスト・テストテキスト・テストテキスト・テストテキスト・テストテキスト" (所得できた場合),
+                    "text": "" (本が存在しない場合)
+                }`
             }
         };
 
