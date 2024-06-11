@@ -208,7 +208,7 @@
             },
             getGenres: {
                 title: "ジャンル一覧",
-                endpoint: "/getGenres",
+                endpoint: "/GetGenres",
                 method: "GET",
                 parameters: [],
                 response: `[
@@ -220,7 +220,7 @@
             },
             getGenreNovels: {
                 title: "そのジャンルの本一覧",
-                endpoint: "/getGenreNovels/{genre}",
+                endpoint: "/GetGenreNovels/{genre}",
                 method: "GET",
                 parameters: ["genre"],
                 response: `[
@@ -229,7 +229,7 @@
             },
             getNovelsInTitle: {
                 title: "タイトルに含む小説のIDとtitleを所得",
-                endpoint: "/getNovelisTitleinTitle/{title}",
+                endpoint: "/GetNovelisTitleinTitle/{title}",
                 method: "GET",
                 parameters: ["title"],
                 response: `[
@@ -239,7 +239,7 @@
             },
             getNovelsInSummary: {
                 title: "サマリーに含む小説のIDとtitleを所得",
-                endpoint: "/getNovelisSummaryinSummary/{summary}",
+                endpoint: "/GetNovelisSummaryinSummary/{summary}",
                 method: "GET",
                 parameters: ["summary"],
                 response: `[
