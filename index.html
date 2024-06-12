@@ -78,6 +78,7 @@
                 <option value="changeNovelGenre">小説のジャンルの変更</option>
                 <option value="changeNovelSummary">小説のあらすじの変更</option>
                 <option value="getNovelID">小説IDを所得する</option>
+                <option value="getUserNovelData">その作者の小説一覧の所得</option>
                 <option value="addText">小説の話の追加</option>
                 <option value="getGenres">ジャンル一覧</option>
                 <option value="getGenreNovels">そのジャンルの本一覧</option>
@@ -195,6 +196,28 @@
                     "message": "Novel not found" (見つからない場合),
                     "novel_id": novel_id (見つかった場合)
                 }`
+            },
+            getUserNovelData: {
+                title: "その作者の小説一覧の所得",
+                endpoint: "/GetUserNovelData/{name}",
+                method: "GET",
+                parameters: ["name"],
+                response: `[
+                            [
+                                3,
+                                "TestTitle1",
+                                8,
+                                2,
+                                "これはテスト用の投稿です。"
+                            ],
+                            [
+                                4,
+                                "Test",
+                                8,
+                                2,
+                                "Test"
+                            ]
+                            ]`
             },
             addText: {
                 title: "小説の話の追加",
