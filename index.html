@@ -80,6 +80,7 @@
                 <option value="getNovelID">小説IDを所得する</option>
                 <option value="getUserNovelData">その作者の小説一覧の所得</option>
                 <option value="addText">小説の話の追加</option>
+                <option value="ChangeText">小説の話の編集</option>
                 <option value="getGenres">ジャンル一覧</option>
                 <option value="getGenreNovels">そのジャンルの本一覧</option>
                 <option value="getNovelsInTitle">タイトルに含む小説のIDとtitleを所得</option>
@@ -113,7 +114,7 @@
     </div>
 
     <script>
-        const baseUrl = "https://novelapi.xyz:8080";
+        const baseUrl = "http://localhost:8080";
         const apiData = {
             isCreateUser: {
                 title: "ユーザー名が登録できるか",
@@ -227,6 +228,16 @@
                 response: `{
                     "message": "Text added" (成功),
                     "message": "Text not added" (失敗)
+                }`
+            },
+            ChangeText: {
+                title: "小説の話の編集",
+                endpoint: "/ChangeText",
+                method: "POST",
+                parameters: ["name", "password", "novel_id", "chapter", "title", "text"],
+                response: `{
+                    "message": "Text changed" (成功),
+                    "message": "Text not changed" (失敗)
                 }`
             },
             getGenres: {
