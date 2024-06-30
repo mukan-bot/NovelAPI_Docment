@@ -73,6 +73,7 @@
                 <option value="isCreateUser">ユーザー名が登録できるか</option>
                 <option value="createUser">ユーザーを作成する</option>
                 <option value="login">ユーザーの認証</option>
+                <option value="getUserName">ユーザー名を所得する</option>
                 <option value="createNovel">小説の投稿</option>
                 <option value="changeNovelTitle">小説のタイトルの変更</option>
                 <option value="changeNovelGenre">小説のジャンルの変更</option>
@@ -114,7 +115,7 @@
     </div>
 
     <script>
-        const baseUrl = "http://localhost:8080";
+        const baseUrl = "https://novelapi.xyz:8080";
         const apiData = {
             isCreateUser: {
                 title: "ユーザー名が登録できるか",
@@ -143,6 +144,16 @@
                 endpoint: "/Login/{name}/{password}",
                 method: "GET",
                 parameters: ["name", "password"],
+                response: `{
+                    "message": "Login success" (成功),
+                    "message": "Login failed" (失敗)
+                }`
+            },
+            getUserName: {
+                title: "ユーザー名を所得する",
+                endpoint: "/GetUserName/{id}",
+                method: "GET",
+                parameters: ["id"],
                 response: `{
                     "message": "Login success" (成功),
                     "message": "Login failed" (失敗)
