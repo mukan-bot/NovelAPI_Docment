@@ -74,6 +74,8 @@
                 <option value="createUser">ユーザーを作成する</option>
                 <option value="login">ユーザーの認証</option>
                 <option value="getUserName">ユーザー名を所得する</option>
+                <option value="updateUserInformation">ユーザーのプロフィールコメントを変更する</option>
+                <option value="getUserInformation">ユーザーのプロフィールコメントを所得する</option>
                 <option value="createNovel">小説の投稿</option>
                 <option value="changeNovelTitle">小説のタイトルの変更</option>
                 <option value="changeNovelGenre">小説のジャンルの変更</option>
@@ -115,7 +117,7 @@
     </div>
 
     <script>
-        const baseUrl = "https://novelapi.xyz:8080";
+        const baseUrl = "http://localhost:8080";
         const apiData = {
             isCreateUser: {
                 title: "ユーザー名が登録できるか",
@@ -158,6 +160,20 @@
                     "message": "Login success" (成功),
                     "message": "Login failed" (失敗)
                 }`
+            },
+            updateUserInformation: {
+                title: "ユーザーのプロフィールコメントを変更する",
+                endpoint: "/UpdateUserInformation",
+                method: "POST",
+                parameters: ["name", "password", "comment"],
+                response: `{"message": "Update success"}`
+            },
+            getUserInformation: {
+                title: "ユーザーのプロフィールコメントを所得する",
+                endpoint: "/GetUserInformation/{name}",
+                method: "GET",
+                parameters: ["name"],
+                response: `{"UserInformation": "プロフィールコメント"}`
             },
             createNovel: {
                 title: "小説の投稿",
