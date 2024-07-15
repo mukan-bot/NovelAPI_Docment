@@ -76,6 +76,8 @@
                 <option value="getUserName">ユーザー名を所得する</option>
                 <option value="updateUserInformation">ユーザーのプロフィールコメントを変更する</option>
                 <option value="getUserInformation">ユーザーのプロフィールコメントを所得する</option>
+                <option value="insertActivityReport">活動報告を追加する</option>
+                <option value="getActivityReport">活動報告を所得する</option>
                 <option value="createNovel">小説の投稿</option>
                 <option value="changeNovelTitle">小説のタイトルの変更</option>
                 <option value="changeNovelGenre">小説のジャンルの変更</option>
@@ -101,7 +103,6 @@
             <p><strong>エンドポイント:</strong> <span id="api-endpoint"></span></p>
             <p><strong>リクエストメソッド:</strong> <span id="api-method"></span></p>
             <p><strong>パラメータ:</strong> <span id="api-parameters"></span></p>
-            <p><strong>レスポンス形式:</strong> <span id="api-response"></span></p>
         </div>
         <div id="api-form" class="api-form" style="display: none;">
             <form id="request-form">
@@ -123,249 +124,151 @@
                 title: "ユーザー名が登録できるか",
                 endpoint: "/isCreateUser/{name}",
                 method: "GET",
-                parameters: ["name"],
-                response: `{
-                    "message": "Ok" (登録できる場合),
-                    "message": "User name is invalid" (記号が含まれている場合),
-                    "message": "User found" (すでに使用されている場合)
-                }`
+                parameters: ["name"]
             },
             createUser: {
                 title: "ユーザーを作成する",
                 endpoint: "/CreateUser/{name}/{password}/{email}",
                 method: "GET",
-                parameters: ["name", "password", "email"],
-                response: `{
-                    "message": "User created" (成功),
-                    "message": "Email is invalid" (Emailが正しくない場合),
-                    "message": "User already" (登録に失敗)
-                }`
+                parameters: ["name", "password", "email"]
             },
             login: {
                 title: "ユーザーの認証",
                 endpoint: "/Login/{name}/{password}",
                 method: "GET",
-                parameters: ["name", "password"],
-                response: `{
-                    "message": "Login success" (成功),
-                    "message": "Login failed" (失敗)
-                }`
+                parameters: ["name", "password"]
             },
             getUserName: {
                 title: "ユーザー名を所得する",
                 endpoint: "/GetUserName/{id}",
                 method: "GET",
-                parameters: ["id"],
-                response: `{
-                    "message": "Login success" (成功),
-                    "message": "Login failed" (失敗)
-                }`
+                parameters: ["id"]
             },
             updateUserInformation: {
                 title: "ユーザーのプロフィールコメントを変更する",
                 endpoint: "/UpdateUserInformation",
                 method: "POST",
-                parameters: ["name", "password", "comment"],
-                response: `{"message": "Update success"}`
+                parameters: ["name", "password", "comment"]
             },
             getUserInformation: {
                 title: "ユーザーのプロフィールコメントを所得する",
                 endpoint: "/GetUserInformation/{name}",
                 method: "GET",
-                parameters: ["name"],
-                response: `{"UserInformation": "プロフィールコメント"}`
+                parameters: ["name"]
+            },
+            insertActivityReport: {
+                title: "ユーザーの活動報告を追加する",
+                endpoint: "/InsertActivityReport",
+                method: "POST",
+                parameters: ["name", "password", "text"]
+            },
+            getActivityReport: {
+                title: "ユーザーのプロフィールコメントを所得する",
+                endpoint: "/GetActivityReport/{name}",
+                method: "GET",
+                parameters: ["name"]
             },
             createNovel: {
                 title: "小説の投稿",
                 endpoint: "/CreateNovel/{name}/{password}/{title}/{genre}/{summary}",
                 method: "GET",
-                parameters: ["name", "password", "title", "genre", "summary"],
-                response: `{
-                    "message": "Novel created" (成功),
-                    "message": "Novel not created" (失敗)
-                }`
+                parameters: ["name", "password", "title", "genre", "summary"]
             },
             changeNovelTitle: {
                 title: "小説のタイトルの変更",
                 endpoint: "/ChangeNovelTitle/{name}/{password}/{id}/{title}",
                 method: "GET",
-                parameters: ["name", "password", "id", "title"],
-                response: `{
-                    "message": "Title changed" (成功),
-                    "message": "Title not changed" (失敗)
-                }`
+                parameters: ["name", "password", "id", "title"]
             },
             changeNovelGenre: {
                 title: "小説のジャンルの変更",
                 endpoint: "/ChangeNovelGenre/{name}/{password}/{id}/{genre}",
                 method: "GET",
-                parameters: ["name", "password", "id", "genre"],
-                response: `{
-                    "message": "Genre changed" (成功),
-                    "message": "Genre not changed" (失敗)
-                }`
+                parameters: ["name", "password", "id", "genre"]
             },
             changeNovelSummary: {
                 title: "小説のあらすじの変更",
                 endpoint: "/ChangeNovelSummary/{name}/{password}/{id}/{summary}",
                 method: "GET",
-                parameters: ["name", "password", "id", "summary"],
-                response: `{
-                    "message": "Summary changed" (成功),
-                    "message": "Summary not changed" (失敗)
-                }`
+                parameters: ["name", "password", "id", "summary"]
             },
             getNovelID: {
                 title: "小説IDを所得する",
                 endpoint: "/GetNovelID/{name}/{password}/{novel_title}",
                 method: "GET",
-                parameters: ["name", "password", "novel_title"],
-                response: `{
-                    "message": "Novel not found" (見つからない場合),
-                    "novel_id": novel_id (見つかった場合)
-                }`
+                parameters: ["name", "password", "novel_title"]
             },
             getUserNovelData: {
                 title: "その作者の小説一覧の所得",
                 endpoint: "/GetUserNovelData/{name}",
                 method: "GET",
-                parameters: ["name"],
-                response: `[
-                            [
-                                3,
-                                "TestTitle1",
-                                8,
-                                2,
-                                "これはテスト用の投稿です。"
-                            ],
-                            [
-                                4,
-                                "Test",
-                                8,
-                                2,
-                                "Test"
-                            ]
-                            ]`
+                parameters: ["name"]
             },
             addText: {
                 title: "小説の話の追加",
                 endpoint: "/AddText",
                 method: "POST",
-                parameters: ["name", "password", "novel_id", "title", "text"],
-                response: `{
-                    "message": "Text added" (成功),
-                    "message": "Text not added" (失敗)
-                }`
+                parameters: ["name", "password", "novel_id", "title", "text"]
             },
             ChangeText: {
                 title: "小説の話の編集",
                 endpoint: "/ChangeText",
                 method: "POST",
-                parameters: ["name", "password", "novel_id", "chapter", "title", "text"],
-                response: `{
-                    "message": "Text changed" (成功),
-                    "message": "Text not changed" (失敗)
-                }`
+                parameters: ["name", "password", "novel_id", "chapter", "title", "text"]
             },
             getGenres: {
                 title: "ジャンル一覧",
                 endpoint: "/GetGenres",
                 method: "GET",
                 parameters: [],
-                response: `[
-                    [2,"ジャンル２",2],
-                    [3,"ジャンル３",2],
-                    [1,"ジャンル１",1],
-                    [4,"ジャンル４",1]
-                ]`
             },
             getGenreNovels: {
                 title: "そのジャンルの本一覧",
                 endpoint: "/GetGenreNovels/{genre}",
                 method: "GET",
-                parameters: ["genre"],
-                response: `[
-                    {"novel_id":1,"title":"テスト投稿"}
-                ]`
+                parameters: ["genre"]
             },
             getNovelsInTitle: {
                 title: "タイトルに含む小説のIDとtitleを所得",
                 endpoint: "/GetNovelisTitleinTitle/{title}",
                 method: "GET",
-                parameters: ["title"],
-                response: `[
-                    {"novel_id":2,"title":"asdf"},
-                    {"novel_id":6,"title":"asdfasdf"}
-                ]`
+                parameters: ["title"]
             },
             getNovelsInSummary: {
                 title: "サマリーに含む小説のIDとtitleを所得",
                 endpoint: "/GetNovelisSummaryinSummary/{summary}",
                 method: "GET",
-                parameters: ["summary"],
-                response: `[
-                    {"novel_id":2,"title":"asdf"},
-                    {"novel_id":6,"title":"asdfasdf"}
-                ]`
+                parameters: ["summary"]
             },
             getChapterCount: {
                 title: "小説のChapter数を所得",
                 endpoint: "/GetChapterCount/{novel_id}",
                 method: "GET",
-                parameters: ["novel_id"],
-                response: `{
-                    "chapter_count": 5 (所得できた場合),
-                    "chapter_count": 0 (本が存在しない場合)
-                }`
+                parameters: ["novel_id"]
             },
             getNovelData: {
                 title: "小説の情報を所得",
                 endpoint: "/GetNovelData/{novel_id}",
                 method: "GET",
-                parameters: ["novel_id"],
-                response: `{
-                    "title": "小説投稿テスト１",
-                    "author": "1",
-                    "genre": "Test",
-                    "summary": "NovelAPIのテスト用小説",
-                    "chapter": 5 (所得できた場合),
-                    "message": "Novel not found" (本が存在しない場合)
-                }`
+                parameters: ["novel_id"]
             },
             getNovelTextData: {
                 title: "小説のチャプターの情報の所得",
                 endpoint: "/GetNovelTextData/{novel_id}/{chapter}",
                 method: "GET",
-                parameters: ["novel_id","chapter"],
-                response: `{
-                    "TextDatas": "chapter": 1, "title": "テスト投稿１"
-                }`
+                parameters: ["novel_id","chapter"]
             },
             getNovelTextDataAll: {
                 title: "小説のチャプターの情報の一覧の所得",
                 endpoint: "/GetNovelTextData/{novel_id}/all",
                 method: "GET",
-                parameters: ["novel_id"],
-                response: `{
-                    "NovelTitle": "小説投稿テスト１",
-                    "TextDatas": [
-                        {"chapter": 1, "title": "テスト投稿１"},
-                        {"chapter": 2, "title": "テスト投稿２"},
-                        {"chapter": 3, "title": "テスト投稿２"},
-                        {"chapter": 4, "title": "テスト投稿３"},
-                        {"chapter": 5, "title": "テスト投稿４"}
-                    ]
-                }`
+                parameters: ["novel_id"]
             },
             getChapterText: {
                 title: "小説のチャプターの本文を所得する",
                 endpoint: "/GetNovelText/{novel_id}/{chapter}",
                 method: "GET",
-                parameters: ["novel_id", "chapter"],
-                response: `{
-                    "text": "テストテキスト・テストテキスト・テストテキスト・テストテキスト・テストテキスト・テストテキスト・テストテキスト" (所得できた場合),
-                    "text": "" (本が存在しない場合)
-                }`
+                parameters: ["novel_id", "chapter"]
             }
         };
 
@@ -381,7 +284,6 @@
             const detailsDiv = document.getElementById('api-details');
             const formDiv = document.getElementById('api-form');
             const formFieldsDiv = document.getElementById('form-fields');
-            const responseDiv = document.getElementById('response');
             
             if (selectedFeature) {
                 const feature = apiData[selectedFeature];
@@ -389,8 +291,7 @@
                 document.getElementById('api-endpoint').textContent = feature.endpoint;
                 document.getElementById('api-method').textContent = feature.method;
                 document.getElementById('api-parameters').textContent = feature.parameters.join(', ');
-                document.getElementById('api-response').textContent = feature.response;
-                
+                                
                 // フォームフィールドをクリア
                 formFieldsDiv.innerHTML = '';
                 feature.parameters.forEach(param => {
