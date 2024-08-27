@@ -70,14 +70,17 @@
             <label for="api-select">API機能を選択してください:</label>
             <select id="api-select">
                 <option value="">選択してください</option>
+
                 <option value="isCreateUser">ユーザー名が登録できるか</option>
                 <option value="createUser">ユーザーを作成する</option>
                 <option value="login">ユーザーの認証</option>
+
                 <option value="getUserName">ユーザー名を所得する</option>
                 <option value="updateUserInformation">ユーザーのプロフィールコメントを変更する</option>
                 <option value="getUserInformation">ユーザーのプロフィールコメントを所得する</option>
                 <option value="insertActivityReport">活動報告を追加する</option>
                 <option value="getActivityReport">活動報告を所得する</option>
+
                 <option value="createNovel">小説の投稿</option>
                 <option value="changeNovelTitle">小説のタイトルの変更</option>
                 <option value="changeNovelGenre">小説のジャンルの変更</option>
@@ -86,15 +89,24 @@
                 <option value="getUserNovelData">その作者の小説一覧の所得</option>
                 <option value="addText">小説の話の追加</option>
                 <option value="ChangeText">小説の話の編集</option>
+
                 <option value="getGenres">ジャンル一覧</option>
                 <option value="getGenreNovels">そのジャンルの本一覧</option>
                 <option value="getNovelsInTitle">タイトルに含む小説のIDとtitleを所得</option>
                 <option value="getNovelsInSummary">サマリーに含む小説のIDとtitleを所得</option>
+
                 <option value="getChapterCount">小説のChapter数を所得</option>
                 <option value="getNovelData">小説の情報を所得</option>
                 <option value="getNovelTextData">小説のチャプターの情報の所得</option>
                 <option value="getNovelTextDataAll">小説のチャプターの情報一覧の所得</option>
                 <option value="getChapterText">小説のチャプターの本文を所得する</option>
+
+                <option value="getNovelComments">小説のコメントを所得する</option>
+                <option value="getChapterComments">小説のチャプターのコメントを所得する</option>
+                <option value="addNovelComment">小説にコメントを追加する</option>
+                <option value="addChapterComment">小説のチャプターにコメントを追加する</option>
+                <option value="getNovelCommentCount">小説のコメント数を所得する</option>
+                <option value="getChapterCommentSumCount">小説のチャプターのコメント数の合計を所得する</option>
             
             </select>
         </div>
@@ -118,7 +130,7 @@
     </div>
 
     <script>
-        const baseUrl = "https://novelapi.xyz:8080";
+        const baseUrl = "http://localhost:8080";
         const apiData = {
             isCreateUser: {
                 title: "ユーザー名が登録できるか",
@@ -269,6 +281,42 @@
                 endpoint: "/GetNovelText/{novel_id}/{chapter}",
                 method: "GET",
                 parameters: ["novel_id", "chapter"]
+            },
+            getNovelComments: {
+                title: "小説のコメントを所得する",
+                endpoint: "/GetNovelComments/{novel_id}",
+                method: "GET",
+                parameters: ["novel_id"]
+            },
+            getChapterComments: {
+                title: "小説のチャプターのコメントを所得する",
+                endpoint: "/GetChapterComments/{novel_id}/{chapter}",
+                method: "GET",
+                parameters: ["novel_id", "chapter"]
+            },
+            addNovelComment: {
+                title: "小説にコメントを追加する",
+                endpoint: "/AddNovelComment",
+                method: "POST",
+                parameters: ["name", "password", "novel_id", "comment"]
+            },
+            addChapterComment: {
+                title: "小説のチャプターにコメントを追加する",
+                endpoint: "/AddChapterComment",
+                method: "POST",
+                parameters: ["name", "password", "novel_id", "chapter", "comment"]
+            },
+            getNovelCommentCount: {
+                title: "小説のコメント数を所得する",
+                endpoint: "/GetNovelCommentCount/{novel_id}",
+                method: "GET",
+                parameters: ["novel_id"]
+            },
+            getChapterCommentSumCount: {
+                title: "小説のチャプターのコメント数の合計を所得する",
+                endpoint: "/GetChapterCommentSumCount/{novel_id}",
+                method: "GET",
+                parameters: ["novel_id"]
             }
         };
 
